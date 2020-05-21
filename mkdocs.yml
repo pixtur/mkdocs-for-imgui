@@ -1,0 +1,130 @@
+# Copyright (c) 2016-2020 Martin Donath <martin.donath@squidfunk.com>
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to
+# deal in the Software without restriction, including without limitation the
+# rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+# sell copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+# IN THE SOFTWARE.
+
+# Project information
+site_name: ImGui documentation
+# site_url: https://squidfunk.github.io/mkdocs-material/
+# site_author: Martin Donath
+site_description: >-
+    A documentation of the project for all involved developers.
+
+# Repository
+repo_name: ocornut/imgui
+repo_url: https://github.com/ocornut/imgui
+# edit_uri: https://github.com/pixtur/imgui/edit/master/docs/
+
+# Copyright
+copyright: TBD
+
+# Configuration
+theme:
+    name: material
+
+    # 404 page
+    static_templates:
+        - 404.html
+
+    # Don't include MkDocs' JavaScript
+    include_search_page: false
+    search_index_only: true
+
+    # Default values, taken from mkdocs_theme.yml
+    language: en
+    features:
+        # - tabs
+        - instant
+    palette:
+        scheme: default
+        primary: indigo
+        accent: indigo
+    font:
+        text: Roboto
+        code: Source Code Pro
+    icon:
+        logo: logo
+    logo: images/imgui.svg
+    favicon: assets/favicon.png
+
+# Plugins
+plugins:
+    - search
+    - minify:
+          minify_html: true
+
+# Customization
+extra:
+    social:
+        - icon: fontawesome/brands/github
+          link: https://github.com/ocornut/imgui
+
+# Extensions
+markdown_extensions:
+    - markdown.extensions.admonition
+    - markdown.extensions.attr_list
+    - markdown.extensions.codehilite:
+          guess_lang: false
+    - markdown.extensions.def_list
+    - markdown.extensions.footnotes
+    - markdown.extensions.meta
+    - markdown.extensions.toc:
+          permalink: true
+    - pymdownx.arithmatex
+    - pymdownx.betterem:
+          smart_enable: all
+    - pymdownx.caret
+    - pymdownx.critic
+    - pymdownx.details
+    - pymdownx.emoji:
+          emoji_index: !!python/name:materialx.emoji.twemoji
+          emoji_generator: !!python/name:materialx.emoji.to_svg
+    # - pymdownx.highlight:
+    #     linenums_style: pymdownx-inline
+    - pymdownx.inlinehilite
+    - pymdownx.keys
+    - pymdownx.magiclink:
+          repo_url_shorthand: true
+          user: ocornut
+          repo: imgui
+    - pymdownx.mark
+    - pymdownx.smartsymbols
+    - pymdownx.snippets:
+          check_paths: true
+    - pymdownx.superfences
+    - pymdownx.tabbed
+    - pymdownx.tasklist:
+          custom_checkbox: true
+    - pymdownx.tilde
+
+nav:
+    - Home: README.md
+    - FAQ: FAQ.md
+    - Fonts: FONTS.md
+    - Change-Log: CHANGELOG.md
+    - TODO: TODO.md
+    # - API:
+    - Flags: api-imgui/Flags---Enumerations.md
+    - Forward: api-imgui/Forward-declarations-and-basic.md
+    - Header: api-imgui/Header-mess.md
+    - ImGui: api-imgui/ImGui--Dear-ImGui-end-user.md
+    - Initial: api-imgui/Initial.md
+# Google Analytics
+# google_analytics:
+#   - !!python/object/apply:os.getenv ["GOOGLE_ANALYTICS_KEY"]
+#   - auto
