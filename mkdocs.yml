@@ -19,11 +19,11 @@
 # IN THE SOFTWARE.
 
 # Project information
-site_name: ImGui documentation
+site_name: ImGui v1.77
 # site_url: https://squidfunk.github.io/mkdocs-material/
 # site_author: Martin Donath
 site_description: >-
-    A documentation of the project for all involved developers.
+    An unofficel documentation scraped from the source files
 
 # Repository
 repo_name: ocornut/imgui

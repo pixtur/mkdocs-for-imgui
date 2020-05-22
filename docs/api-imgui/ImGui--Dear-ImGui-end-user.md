@@ -113,15 +113,15 @@ void StyleColorsLight(ImGuiStyle* dst = NULL)
 ```
 best used with borders and a custom, thicker font
 ### Windows
-- Begin() = push window to the stack and start appending to it. End() = pop window from the stack.
+- `Begin()` = push window to the stack and start appending to it. `End()` = pop window from the stack.
 - You may append multiple times to the same window during the same frame.
-- Passing 'bool* p_open != NULL' shows a window-closing widget in the upper-right corner of the window,
-which clicking will set the boolean to false when clicked.
-- Begin() return false to indicate the window is collapsed or fully clipped, so you may early out and omit submitting
-anything to the window. Always call a matching End() for each Begin() call, regardless of its return value!
-[Important: due to legacy reason, this is inconsistent with most other functions such as BeginMenu/EndMenu,
-BeginPopup/EndPopup, etc. where the EndXXX call should only be called if the corresponding BeginXXX function
-returned true. Begin and BeginChild are the only odd ones out. Will be fixed in a future update.]
+- Passing `bool* p_open != NULL` shows a window-closing widget in the upper-right corner of the window,
+  which clicking will set the boolean to false when clicked.
+- `Begin()` return false to indicate the window is collapsed or fully clipped, so you may early out and omit submitting
+  anything to the window. Always call a matching End() for each Begin() call, regardless of its return value!
+  [Important: due to legacy reason, this is inconsistent with most other functions such as `BeginMenu` / `EndMenu`,
+   `BeginPopup` / `EndPopup`, etc. where the EndXXX call should only be called if the corresponding BeginXXX function
+   returned true. `Begin` and `BeginChild` are the only odd ones out. Will be fixed in a future update.]
 - Note that the bottom of window stack always contains a window called "Debug".
 
 
@@ -135,9 +135,13 @@ void End()
 ```
 ### Child Windows
 - Use child windows to begin into a self-contained independent scrolling/clipping regions within a host window. Child windows can embed their own child.
-- For each independent axis of 'size': ==0.0f: use remaining host window size / >0.0f: fixed size / <0.0f: use remaining window size minus abs(size) / Each axis can use a different mode, e.g. ImVec2(0,400).
-- BeginChild() returns false to indicate the window is collapsed or fully clipped, so you may early out and omit submitting anything to the window.
-Always call a matching EndChild() for each BeginChild() call, regardless of its return value [as with Begin: this is due to legacy reason and inconsistent with most BeginXXX functions apart from the regular Begin() which behaves like BeginChild().]
+- For each independent axis of `size`: 
+    - `== 0.0f` -> use remaining host window size 
+    - `> 0.0f` -> fixed size
+    - `< 0.0f` -> use remaining window size minus abs(size)
+- Each axis can use a different mode, e.g. `ImVec2(0,400)`.
+- `BeginChild()` returns false to indicate the window is collapsed or fully clipped, so you may early out and omit submitting anything to the window.
+Always call a matching `EndChild()` for each `BeginChild()` call, regardless of its return value [as with `Begin`: this is due to legacy reason and inconsistent with most BeginXXX functions apart from the regular `Begin()` which behaves like `BeginChild()`.]
 
 
 
@@ -153,7 +157,8 @@ bool BeginChild(ImGuiID id, const ImVec2& size = ImVec2(0,0), bool border = fals
 void EndChild()
 ```
 ### Windows Utilities
-- 'current window' = the window we are appending into while inside a Begin()/End() block. 'next window' = next window we will Begin() into.
+- _Current window_ = the window we are appending into while inside a `Begin()` / `End()` block. 
+- _Next window_ = next window we will `Begin()` into.
 
 
 
@@ -168,38 +173,39 @@ bool IsWindowCollapsed()
 ``` c
 bool IsWindowFocused(ImGuiFocusedFlags flags=0)
 ```
-is current window focused? or its root/child, depending on flags. see flags for options.
+is _current window_ focused? Or its root/child, depending on flags. See flags for options.
 
 ``` c
 bool IsWindowHovered(ImGuiHoveredFlags flags=0)
 ```
-is current window hovered (and typically: not blocked by a popup/modal)? see flags for options. NB: If you are trying to check whether your mouse should be dispatched to imgui or to your app, you should use the 'io.WantCaptureMouse' boolean for that! Please read the FAQ!
+is _current window_ hovered (and typically: not blocked by a popup/modal)? See flags for options. NB: If you are trying to check whether your mouse should be dispatched to imgui or to your app, you should use the 'io.WantCaptureMouse' boolean for that! Please read the FAQ!
 
 ``` c
 ImDrawList* GetWindowDrawList()
 ```
-get draw list associated to the current window, to append your own drawing primitives
+get draw list associated to the _current window_, to append your own drawing primitives
 
 ``` c
 ImVec2 GetWindowPos()
 ```
-get current window position in screen space (useful if you want to do your own drawing via the DrawList API)
+get _current window_ position in screen space (useful if you want to do your own drawing via the DrawList API)
 
 ``` c
 ImVec2 GetWindowSize()
 ```
-get current window size
+get _current window_ size
 
 ``` c
 float GetWindowWidth()
 ```
-get current window width (shortcut for GetWindowSize().x)
+get _current window_ width (shortcut for `GetWindowSize().x`)
 
 ``` c
 float GetWindowHeight()
 ```
-get current window height (shortcut for GetWindowSize().y)
-### Prefer using SetNextXXX functions (before Begin) rather that SetXXX functions (after Begin).
+get _current window_ height (shortcut for `GetWindowSize().y`)
+### Next Window Utilities
+- Prefer using `SetNextXXX` functions (before `Begin`) rather than `SetXXX` functions (after `Begin()`).
 
 
 
@@ -485,8 +491,8 @@ void PopButtonRepeat()
 - The typical widget behavior is to output themselves at the current cursor position, then move the cursor one line down.
 - You can call SameLine() between widgets to undo the last carriage return and output at the right of the preceeding widget.
 - Attention! We currently have inconsistencies between window-local and absolute positions we will aim to fix with future API:
-Window-local coordinates:   SameLine(), GetCursorPos(), SetCursorPos(), GetCursorStartPos(), GetContentRegionMax(), GetWindowContentRegion*(), PushTextWrapPos()
-Absolute coordinate:        GetCursorScreenPos(), SetCursorScreenPos(), all ImDrawList:: functions.
+   Window-local coordinates:   SameLine(), GetCursorPos(), SetCursorPos(), GetCursorStartPos(), GetContentRegionMax(), GetWindowContentRegion*(), PushTextWrapPos()
+   Absolute coordinate:        GetCursorScreenPos(), SetCursorScreenPos(), all ImDrawList:: functions.
 
 
 
@@ -601,11 +607,11 @@ float GetFrameHeightWithSpacing()
 ~ FontSize + style.FramePadding.y * 2 + style.ItemSpacing.y (distance in pixels between 2 consecutive lines of framed widgets)
 ### ID stack/scopes
 - Read the FAQ for more details about how ID are handled in dear imgui. If you are creating widgets in a loop you most
-likely want to push a unique identifier (e.g. object pointer, loop index) to uniquely differentiate them.
+  likely want to push a unique identifier (e.g. object pointer, loop index) to uniquely differentiate them.
 - The resulting ID are hashes of the entire stack.
 - You can also use the "Label##foobar" syntax within widget label to distinguish them from each others.
 - In this header file we use the "label"/"name" terminology to denote a string that will be displayed and used as an ID,
-whereas "str_id" denote a string that is only used as an ID and not normally displayed.
+  whereas "str_id" denote a string that is only used as an ID and not normally displayed.
 
 
 
@@ -1244,14 +1250,14 @@ void SetTooltipV(const char* fmt, va_list args) IM_FMTLIST(1)
 The properties of popups windows are:
 - They block normal mouse hovering detection outside them. (*1)
 - Unless modal, they can be closed by clicking anywhere outside them, or by pressing ESCAPE.
-Because hovering detection is disabled outside the popup, when clicking outside the click will not be seen by underlying widgets! (*1)
+  Because hovering detection is disabled outside the popup, when clicking outside the click will not be seen by underlying widgets! (*1)
 - Their visibility state (~bool) is held internally by Dear ImGui instead of being held by the programmer as we are used to with regular Begin() calls.
-User can manipulate the visibility state by calling OpenPopup(), CloseCurrentPopup() etc.
+  User can manipulate the visibility state by calling OpenPopup(), CloseCurrentPopup() etc.
 - We default to use the right mouse (ImGuiMouseButton_Right=1) for the Popup Context functions.
 Those three properties are connected: we need to retain popup visibility state in the library because popups may be closed as any time.
 (*1) You can bypass that restriction and detect hovering even when normally blocked by a popup.
-To do this use the ImGuiHoveredFlags_AllowWhenBlockedByPopup when calling IsItemHovered() or IsWindowHovered().
-This is what BeginPopupContextItem() and BeginPopupContextWindow() are doing already, allowing a right-click to reopen another popups without losing the click.
+     To do this use the ImGuiHoveredFlags_AllowWhenBlockedByPopup when calling IsItemHovered() or IsWindowHovered().
+     This is what BeginPopupContextItem() and BeginPopupContextWindow() are doing already, allowing a right-click to reopen another popups without losing the click.
 
 
 
