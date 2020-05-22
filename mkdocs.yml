@@ -118,12 +118,11 @@ nav:
     - Fonts: FONTS.md
     - Change-Log: CHANGELOG.md
     - TODO: TODO.md
-    # - API:
-    - Flags: api-imgui/Flags---Enumerations.md
-    - Forward: api-imgui/Forward-declarations-and-basic.md
-    - Header: api-imgui/Header-mess.md
-    - ImGui: api-imgui/ImGui--Dear-ImGui-end-user.md
-    - Initial: api-imgui/Initial.md
+    - API Introduction: api-imgui/Introduction.md
+    - API ImGui: api-imgui/ImGui--Dear-ImGui-end-user.md
+    - API Flags: api-imgui/Flags---Enumerations.md
+    - API Forward: api-imgui/Forward-declarations-and-basic.md
+    - API Header: api-imgui/Header-mess.md
 # Google Analytics
 # google_analytics:
 #   - !!python/object/apply:os.getenv ["GOOGLE_ANALYTICS_KEY"]

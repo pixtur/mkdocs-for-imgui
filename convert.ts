@@ -290,8 +290,11 @@ class Comment extends Token {
 
     constructor(text: string) {
         super();
-        this.title = text.replace(/\/\/\s+/g, '');
-        this.text = text.replace(/\/\/\s+/g, '');
+
+        const lines = text.replace(/\/\/\s+/g, '').split('\n');
+
+        this.title = lines[0];
+        this.text =  lines.length<1 ? '' : lines.slice(1).join('\n'); 
         // TODO: more parsing here...
     }
 
@@ -316,7 +319,8 @@ class Comment extends Token {
     }
 
     writeMarkdown(writer: MarkdownFileWriter) {
-        writer.write('## ' + this.title + '\n');
+        if(!this.title.startsWith('!'))
+            writer.write('## ' + this.title + '\n');
 
         writer.write(this.text);
 
@@ -336,7 +340,7 @@ class Section extends Token {
 
     static parse(text: string): Token[] {
         const regex = /(.*?)\/\/----.*?\n\/\/(.*?)\n\/\/----.*?\n(.*)/ms;
-        let previousTitle = 'Initial';
+        let previousTitle = 'Introduction';
         let sections: Section[] = [];
         let remaining: string = text;
 
