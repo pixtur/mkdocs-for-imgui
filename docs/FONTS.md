@@ -1,65 +1,65 @@
 dear imgui
-FONTS DOCUMENTATION
+
+# Fonts Documentation
 
 Also read https://www.dearimgui.org/faq for more fonts related infos.
 
-The code in imgui.cpp embeds a copy of 'ProggyClean.ttf' (by Tristan Grimmer),
-a 13 pixels high, pixel-perfect font used by default.
-We embed it font in source code so you can use Dear ImGui without any file system access.
+The code in _imgui.cpp_ embeds a copy of `ProggyClean.ttf` (by Tristan Grimmer),
+a 13 pixels high, pixel-perfect font used by default. We embed this font in source code so you can use Dear ImGui without any file system access.
 
 You may also load external .TTF/.OTF files.
 The files in this folder are suggested fonts, provided as a convenience.
 
-Please read the FAQ: https://www.dearimgui.org/faq
-Please use the Discord server: http://discord.dearimgui.org and not the Github issue tracker for basic font loading questions.
+Please read
 
+-   [FAQ](https://github.com/ocornut/imgui/blob/master/docs/FAQ.md#qa-fonts-text)
+-   Please use the Discord server: http://discord.dearimgui.org and not the Github issue tracker for basic font loading questions.
 
----------------------------------------
- INDEX:
----------------------------------------
+## Index
 
-- Readme First / FAQ
-- Fonts Loading Instructions
-- Using Icons
-- Using FreeType rasterizer
-- Building Custom Glyph Ranges
-- Using custom colorful icons
-- Embedding Fonts in Source Code
-- Credits/Licences for fonts included in repository
-- Fonts Links
+-   Readme First / FAQ
+-   Fonts Loading Instructions
+-   Using Icons
+-   Using FreeType rasterizer
+-   Building Custom Glyph Ranges
+-   Using custom colorful icons
+-   Embedding Fonts in Source Code
+-   Credits/Licences for fonts included in repository
+-   Fonts Links
 
+## Readme first
 
----------------------------------------
- README FIRST / FAQ
----------------------------------------
+-   You can use the _Style editor_ `ImGui::ShowStyleEditor()` in the _Fonts_ section to browse your fonts and understand what's going on if you have an issue.
+-   Fonts are rasterized in a single texture at the time of calling either of `io.Fonts->GetTexDataAsAlpha8()` / `GetTexDataAsRGBA32()` / `Build()`.
+-   Make sure your font ranges data are persistent and available at the time the font atlas is being built.
+-   Use C++11 `u8"my text"` syntax to encode literal strings as UTF-8. e.g.:
 
-- You can use the style editor ImGui::ShowStyleEditor() in the "Fonts" section to browse your fonts
-  and understand what's going on if you have an issue.
-- Fonts are rasterized in a single texture at the time of calling either of io.Fonts->GetTexDataAsAlpha8()/GetTexDataAsRGBA32()/Build().
-- Make sure your font ranges data are persistent and available at the time the font atlas is being built.
-- Use C++11 u8"my text" syntax to encode literal strings as UTF-8. e.g.:
-      u8"hello"
-      u8"こんにちは"   // this will be encoded as UTF-8
-- If you want to include a backslash \ character in your string literal, you need to double them e.g. "folder\\filename".
-  Read FAQ for details.
+```c
+      `u8"hello"`
+      `u8"こんにちは"`   // this will be encoded as UTF-8
+```
 
+-   If you want to include a backslash `\` character in your string literal, you need to double them e.g. `"folder\\filename"`. Read [FAQ](https://github.com/ocornut/imgui/blob/master/docs/FAQ.md#qa-fonts-text) for details.
 
----------------------------------------
- FONTS LOADING INSTRUCTIONS
----------------------------------------
+## Loading Fonts
 
 Load default font:
 
+```c
   ImGuiIO& io = ImGui::GetIO();
   io.Fonts->AddFontDefault();
+```
 
 Load .TTF/.OTF file with:
 
+```c
   ImGuiIO& io = ImGui::GetIO();
   io.Fonts->AddFontFromFileTTF("font.ttf", size_pixels);
+```
 
 Load multiple fonts:
 
+```c
   ImGuiIO& io = ImGui::GetIO();
   ImFont* font1 = io.Fonts->AddFontFromFileTTF("font.ttf", size_pixels);
   ImFont* font2 = io.Fonts->AddFontFromFileTTF("anotherfont.otf", size_pixels);
@@ -69,17 +69,21 @@ Load multiple fonts:
   ImGui::PushFont(font2);
   ImGui::Text("Hello with another font");
   ImGui::PopFont();
+```
 
 For advanced options create a ImFontConfig structure and pass it to the AddFont function (it will be copied internally):
 
+```c
   ImFontConfig config;
   config.OversampleH = 2;
   config.OversampleV = 1;
   config.GlyphExtraSpacing.x = 1.0f;
   ImFont* font = io.Fonts->AddFontFromFileTTF("font.ttf", size_pixels, &config);
+```
 
 Combine two fonts into one:
 
+```c
   // Load a first font
   ImFont* font = io.Fonts->AddFontDefault();
 
@@ -92,28 +96,29 @@ Combine two fonts into one:
   io.Fonts->AddFontFromFileTTF("DroidSans.ttf", 18.0f, &config, io.Fonts->GetGlyphRangesJapanese());
   io.Fonts->AddFontFromFileTTF("fontawesome-webfont.ttf", 18.0f, &config, icons_ranges);
   io.Fonts->Build();
+```
 
-Font atlas is too large?
+## Font atlas is too large?
 
-- If you have very large number of glyphs or multiple fonts, the texture may become too big for your graphics API.
-- The typical result of failing to upload a texture is if every glyphs appears as white rectangles.
-- In particular, using a large range such as GetGlyphRangesChineseSimplifiedCommon() is not recommended
-  unless you set OversampleH/OversampleV to 1 and use a small font size.
-- Mind the fact that some graphics drivers have texture size limitation.
-- If you are building a PC application, mind the fact that users may run on hardware with lower specs than yours.
+-   If you have very large number of glyphs or multiple fonts, the texture may become too big for your graphics API.
+-   The typical result of failing to upload a texture is if every glyphs appears as white rectangles.
+-   In particular, using a large range such as `GetGlyphRangesChineseSimplifiedCommon()` is not recommended
+    unless you set `OversampleH` / `OversampleV` to 1 and use a small font size.
+-   Mind the fact that some graphics drivers have texture size limitation.
+-   If you are building a PC application, mind the fact that users may run on hardware with lower specs than yours.
 
-Some solutions:
+### Some solutions:
 
- - 1) Reduce glyphs ranges by calculating them from source localization data.
+1. Reduce glyphs ranges by calculating them from source localization data.
    You can use ImFontGlyphRangesBuilder for this purpose, this will be the biggest win!
- - 2) You may reduce oversampling, e.g. config.OversampleH = config.OversampleV = 1, this will largely reduce your texture size.
- - 3) Set io.Fonts.TexDesiredWidth to specify a texture width to minimize texture height (see comment in ImFontAtlas::Build function).
- - 4) Set io.Fonts.Flags |= ImFontAtlasFlags_NoPowerOfTwoHeight; to disable rounding the texture height to the next power of two.
- - Read about oversampling here: https://github.com/nothings/stb/blob/master/tests/oversample
-
+2. You may reduce oversampling, e.g. config.OversampleH = config.OversampleV = 1, this will largely reduce your texture size.
+3. Set io.Fonts.TexDesiredWidth to specify a texture width to minimize texture height (see comment in ImFontAtlas::Build function).
+4. Set io.Fonts.Flags |= ImFontAtlasFlags_NoPowerOfTwoHeight; to disable rounding the texture height to the next power of two.
+5. Read about oversampling here: https://github.com/nothings/stb/blob/master/tests/oversample
 
 Add a fourth parameter to bake specific font ranges only:
 
+```c
   // Basic Latin, Extended Latin
   io.Fonts->AddFontFromFileTTF("font.ttf", size_pixels, NULL, io.Fonts->GetGlyphRangesDefault());
 
@@ -128,28 +133,29 @@ Offset font vertically by altering the io.Font->DisplayOffset value:
 
   ImFont* font = io.Fonts->AddFontFromFileTTF("font.ttf", size_pixels);
   font->DisplayOffset.y = 1;   // Render 1 pixel down
+```
 
+## Using Icons
 
----------------------------------------
- USING ICONS
----------------------------------------
+Using an icon font (such as [FontAwesome](http://fontawesome.io) or [OpenFontIcons](https://github.com/traverseda/OpenFontIcons) is an easy and practical way to use icons in your Dear ImGui application.
 
-Using an icon font (such as FontAwesome: http://fontawesome.io or OpenFontIcons. https://github.com/traverseda/OpenFontIcons)
-is an easy and practical way to use icons in your Dear ImGui application.
 A common pattern is to merge the icon font within your main font, so you can embed icons directly from your strings without
 having to change fonts back and forth.
 
 To refer to the icon UTF-8 codepoints from your C++ code, you may use those headers files created by Juliette Foucaut:
 
-  https://github.com/juliettef/IconFontCppHeaders
+https://github.com/juliettef/IconFontCppHeaders
 
 Those files contains a bunch of named #define which you can use to refer to specific icons of the font, e.g.:
 
+```c
   #define ICON_FA_MUSIC   "\xef\x80\x81"
   #define ICON_FA_SEARCH  "\xef\x80\x82"
+```
 
 Example Setup:
 
+```c
   // Merge icons into default tool font
   #include "IconsFontAwesome.h"
   ImGuiIO& io = ImGui::GetIO();
@@ -160,41 +166,38 @@ Example Setup:
   config.GlyphMinAdvanceX = 13.0f; // Use if you want to make the icon monospaced
   static const ImWchar icon_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
   io.Fonts->AddFontFromFileTTF("fonts/fontawesome-webfont.ttf", 13.0f, &config, icon_ranges);
+```
 
 Example Usage:
 
+```c
   // Usage, e.g.
   ImGui::Text("%s among %d items", ICON_FA_SEARCH, count);
   ImGui::Button(ICON_FA_SEARCH " Search");
+```
 
-Important to understand: C string _literals_ can be concatenated at compilation time, e.g. "hello" " world"
-ICON_FA_SEARCH is defined as a string literal so this is the same as "A" "B" becoming "AB"
+Important to understand: C string _literals_ can be concatenated at compilation time, e.g. `"hello"` `" world"`.
+
+`ICON_FA_SEARCH` is defined as a string literal so this is the same as ` "A"`` "B" ` becoming `"AB"`.
 
 See Links below for other icons fonts and related tools.
 
+## Freetype Rasterizer and Small Font Sizes
 
----------------------------------------
- FREETYPE RASTERIZER, SMALL FONT SIZES
----------------------------------------
+Dear ImGui uses _imstb_truetype.h_ to rasterize fonts (with optional oversampling).
+This technique and its implementation are not ideal for fonts rendered at _small sizes_, which may appear a little blurry or hard to read.
 
-Dear ImGui uses imstb_truetype.h to rasterize fonts (with optional oversampling).
-This technique and its implementation are not ideal for fonts rendered at _small sizes_, which may appear a
-little blurry or hard to read.
+There is an implementation of the `ImFontAtlas` builder using _FreeType_ that you can use in the `misc/freetype/` folder.
 
-There is an implementation of the ImFontAtlas builder using FreeType that you can use in the misc/freetype/ folder.
-
-FreeType supports auto-hinting which tends to improve the readability of small fonts.
+_FreeType_ supports auto-hinting which tends to improve the readability of small fonts.
 Note that this code currently creates textures that are unoptimally too large (could be fixed with some work).
 Also note that correct sRGB space blending will have an important effect on your font rendering quality.
 
+## Building Custom Glypth Ranges
 
----------------------------------------
- BUILDING CUSTOM GLYPH RANGES
----------------------------------------
+You can use the `ImFontGlyphRangesBuilder` helper to create glyph ranges based on text input. For example: for a game where your script is known, if you can feed your entire script to it and only build the characters the game needs.
 
-You can use the ImFontGlyphRangesBuilder helper to create glyph ranges based on text input.
-For example: for a game where your script is known, if you can feed your entire script to it and only build the characters the game needs.
-
+```c
   ImVector<ImWchar> ranges;
   ImFontGlyphRangesBuilder builder;
   builder.AddText("Hello world");                        // Add a string (here "Hello world" contains 7 unique characters)
@@ -204,21 +207,19 @@ For example: for a game where your script is known, if you can feed your entire 
 
   io.Fonts->AddFontFromFileTTF("myfontfile.ttf", size_in_pixels, NULL, ranges.Data);
   io.Fonts->Build();                                     // Build the atlas while 'ranges' is still in scope and not deleted.
+```
 
-
----------------------------------------
- USING CUSTOM COLORFUL ICONS
----------------------------------------
+## Using Custom Colorful Icons
 
 (This is a BETA api, use if you are familiar with dear imgui and with your rendering back-end)
 
-You can use the ImFontAtlas::AddCustomRect() and ImFontAtlas::AddCustomRectFontGlyph() api to register rectangles
-that will be packed into the font atlas texture. Register them before building the atlas, then call Build().
-You can then use ImFontAtlas::GetCustomRectByIndex(int) to query the position/size of your rectangle within the
-texture, and blit/copy any graphics data of your choice into those rectangles.
+You can use the `ImFontAtlas::AddCustomRect()` and `ImFontAtlas::AddCustomRectFontGlyph()` api to register rectangles that will be packed into the font atlas texture. Register them before building the atlas, then call `Build()`.
+
+You can then use `ImFontAtlas::GetCustomRectByIndex(int)` to query the position/size of your rectangle within the texture, and blit/copy any graphics data of your choice into those rectangles.
 
 Pseudo-code:
 
+```c
   // Add font, then register two custom 13x13 rectangles mapped to glyph 'a' and 'b' of this font
   ImFont* font = io.Fonts->AddFontDefault();
   int rect_ids[2];
@@ -247,130 +248,114 @@ Pseudo-code:
           }
       }
   }
+```
 
+## Embedding Fonts in Source Code
 
----------------------------------------
- EMBEDDING FONTS IN SOURCE CODE
----------------------------------------
+Compile and use `binary_to_compressed_c.cpp` to create a compressed C style array that you can embed in source code. See the `documentation in binary_to_compressed_c.cpp` for instruction on how to use the tool.
 
-Compile and use 'binary_to_compressed_c.cpp' to create a compressed C style array that you can embed in source code.
-See the documentation in binary_to_compressed_c.cpp for instruction on how to use the tool.
-You may find a precompiled version binary_to_compressed_c.exe for Windows instead of demo binaries package (see README).
-The tool can optionally output Base85 encoding to reduce the size of _source code_ but the read-only arrays in the
-actual binary will be about 20% bigger.
+You may find a precompiled version `binary_to_compressed_c.exe` for Windows instead of demo binaries package (see README). The tool can optionally output _Base85_ encoding to reduce the size of _source code_ but the read-only arrays in the actual binary will be about 20% bigger.
 
 Then load the font with:
+
+```c
   ImFont* font = io.Fonts->AddFontFromMemoryCompressedTTF(compressed_data, compressed_data_size, size_pixels, ...);
 or:
   ImFont* font = io.Fonts->AddFontFromMemoryCompressedBase85TTF(compressed_data_base85, size_pixels, ...);
+```
 
+---
 
----------------------------------------
- CREDITS/LICENSES FOR FONTS INCLUDED IN REPOSITORY
----------------------------------------
+## Credits / Licenses for Fonts included in Repository
 
 Some fonts are available in the misc/fonts/ folder:
 
-Roboto-Medium.ttf
+#### Roboto-Medium.ttf
 
-  Apache License 2.0
-  by Christian Robertson
-  https://fonts.google.com/specimen/Roboto
+Apache License 2.0<br/>
+by Christian Robertson<br/>
+https://fonts.google.com/specimen/Roboto\
 
-Cousine-Regular.ttf
+#### Cousine-Regular.ttf
 
-  by Steve Matteson
-  Digitized data copyright (c) 2010 Google Corporation.
-  Licensed under the SIL Open Font License, Version 1.1
-  https://fonts.google.com/specimen/Cousine
+by Steve Matteson<br/>
+Digitized data copyright (c) 2010 Google Corporation.<br/>
+Licensed under the SIL Open Font License, Version 1.1<br/>
+https://fonts.google.com/specimen/Cousine
 
-DroidSans.ttf
+#### DroidSans.ttf
 
-  Copyright (c) Steve Matteson
-  Apache License, version 2.0
-  https://www.fontsquirrel.com/fonts/droid-sans
+Copyright (c) Steve Matteson<br/>
+Apache License, version 2.0<br/>
+https://www.fontsquirrel.com/fonts/droid-sans
 
-ProggyClean.ttf
+#### ProggyClean.ttf
 
-  Copyright (c) 2004, 2005 Tristan Grimmer
-  MIT License
-  recommended loading setting: Size = 13.0, DisplayOffset.Y = +1
-  http://www.proggyfonts.net/
+Copyright (c) 2004, 2005 Tristan Grimmer<br/>
+MIT License<br/>
+recommended loading setting: Size = 13.0, DisplayOffset.Y = +1<br/>
+http://www.proggyfonts.net/
 
-ProggyTiny.ttf
-  Copyright (c) 2004, 2005 Tristan Grimmer
-  MIT License
-  recommended loading setting: Size = 10.0, DisplayOffset.Y = +1
-  http://www.proggyfonts.net/
+#### ProggyTiny.ttf
 
-Karla-Regular.ttf
-  Copyright (c) 2012, Jonathan Pinhorn
-  SIL OPEN FONT LICENSE Version 1.1
+Copyright (c) 2004, 2005 Tristan Grimmer<br/>
+MIT License<br/>
+recommended loading setting: Size = 10.0, DisplayOffset.Y = +1<br/>
+http://www.proggyfonts.net/
 
+#### Karla-Regular.ttf
 
----------------------------------------
- FONTS LINKS
----------------------------------------
+Copyright (c) 2012, Jonathan Pinhorn<br/>
+SIL OPEN FONT LICENSE Version 1.1<br/>
 
-ICON FONTS
+## Font Links
 
-  C/C++ header for icon fonts (#define with code points to use in source code string literals)
-  https://github.com/juliettef/IconFontCppHeaders
+### Icon Fonts
 
-  FontAwesome
-  https://fortawesome.github.io/Font-Awesome
+-   C/C++ header for icon fonts (#define with code points to use in source code string literals)
+    https://github.com/juliettef/IconFontCppHeaders
+-   FontAwesome
+    https://fortawesome.github.io/Font-Awesome
+-   OpenFontIcons
+    https://github.com/traverseda/OpenFontIcons
+-   Google Icon Fonts
+    https://design.google.com/icons/
+-   Kenney Icon Font (Game Controller Icons)
+    https://github.com/nicodinh/kenney-icon-font
+-   IcoMoon - Custom Icon font builder
+    https://icomoon.io/app
 
-  OpenFontIcons
-  https://github.com/traverseda/OpenFontIcons
+### Regular Fonts
 
-  Google Icon Fonts
-  https://design.google.com/icons/
+-   Google Noto Fonts (worldwide languages)
+    https://www.google.com/get/noto/
+-   Open Sans Fonts
+    https://fonts.google.com/specimen/Open+Sans
+-   (Japanese) M+ fonts by Coji Morishita are free
+    http://mplus-fonts.sourceforge.jp/mplus-outline-fonts/index-en.html
 
-  Kenney Icon Font (Game Controller Icons)
-  https://github.com/nicodinh/kenney-icon-font
+### MONOSPACE FONTS (PIXEL PERFECT)
 
-  IcoMoon - Custom Icon font builder
-  https://icomoon.io/app
+-   Proggy Fonts, by Tristan Grimmer
+    http://www.proggyfonts.net or http://upperbounds.net
+-   Sweet16, Sweet16 Mono, by Martin Sedlak (Latin + Supplemental + Extended A)
+    https://github.com/kmar/Sweet16Font
 
-REGULAR FONTS
+Also include `.inl` file to use directly in dear imgui.
 
-  Google Noto Fonts (worldwide languages)
-  https://www.google.com/get/noto/
+### MONOSPACE FONTS (REGULAR)
 
-  Open Sans Fonts
-  https://fonts.google.com/specimen/Open+Sans
+-   Google Noto Mono Fonts
+    https://www.google.com/get/noto/
+-   Typefaces for source code beautification
+    https://github.com/chrissimpkins/codeface
+-   Programmation fonts
+    http://s9w.github.io/font_compare/
+-   Inconsolata
+    http://www.levien.com/type/myfonts/inconsolata.html
+-   Adobe Source Code Pro: Monospaced font family for user interface and coding environments
+    https://github.com/adobe-fonts/source-code-pro
+-   Monospace/Fixed Width Programmer's Fonts
+    http://www.lowing.org/fonts/
 
-  (Japanese) M+ fonts by Coji Morishita are free
-  http://mplus-fonts.sourceforge.jp/mplus-outline-fonts/index-en.html
-
-MONOSPACE FONTS (PIXEL PERFECT)
-
-  Proggy Fonts, by Tristan Grimmer
-  http://www.proggyfonts.net or http://upperbounds.net
-
-  Sweet16, Sweet16 Mono, by Martin Sedlak (Latin + Supplemental + Extended A)
-  https://github.com/kmar/Sweet16Font
-  Also include .inl file to use directly in dear imgui.
-
-MONOSPACE FONTS (REGULAR)
-
-  Google Noto Mono Fonts
-  https://www.google.com/get/noto/
-
-  Typefaces for source code beautification
-  https://github.com/chrissimpkins/codeface
-
-  Programmation fonts
-  http://s9w.github.io/font_compare/
-
-  Inconsolata
-  http://www.levien.com/type/myfonts/inconsolata.html
-
-  Adobe Source Code Pro: Monospaced font family for user interface and coding environments
-  https://github.com/adobe-fonts/source-code-pro
-
-  Monospace/Fixed Width Programmer's Fonts
-  http://www.lowing.org/fonts/
-
-
- Or use Arial Unicode or other Unicode fonts provided with Windows for full characters coverage (not sure of their licensing).
+Or use Arial Unicode or other Unicode fonts provided with Windows for full characters coverage (not sure of their licensing).
