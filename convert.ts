@@ -200,7 +200,7 @@ class ScopeContent extends Token {
 class ScopeComment extends Token {
     constructor(text: string) {
         super();
-        this.title = text.replace(/    \/\/\s+/g, '');
+        this.title = text.replace(/    \/\/\s/g, '');
         // TODO: more parsing here...
     }
 
