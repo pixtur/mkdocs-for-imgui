@@ -267,41 +267,47 @@ namespace ImGui
     IMGUI_API void          StyleColorsLight(ImGuiStyle* dst = NULL);   // best used with borders and a custom, thicker font
 
     // Windows
-    // - Begin() = push window to the stack and start appending to it. End() = pop window from the stack.
+    // - `Begin()` = push window to the stack and start appending to it. `End()` = pop window from the stack.
     // - You may append multiple times to the same window during the same frame.
-    // - Passing 'bool* p_open != NULL' shows a window-closing widget in the upper-right corner of the window,
+    // - Passing `bool* p_open != NULL` shows a window-closing widget in the upper-right corner of the window,
     //   which clicking will set the boolean to false when clicked.
-    // - Begin() return false to indicate the window is collapsed or fully clipped, so you may early out and omit submitting
+    // - `Begin()` return false to indicate the window is collapsed or fully clipped, so you may early out and omit submitting
     //   anything to the window. Always call a matching End() for each Begin() call, regardless of its return value!
-    //   [Important: due to legacy reason, this is inconsistent with most other functions such as BeginMenu/EndMenu,
-    //    BeginPopup/EndPopup, etc. where the EndXXX call should only be called if the corresponding BeginXXX function
-    //    returned true. Begin and BeginChild are the only odd ones out. Will be fixed in a future update.]
+    //   [Important: due to legacy reason, this is inconsistent with most other functions such as `BeginMenu` / `EndMenu`,
+    //    `BeginPopup` / `EndPopup`, etc. where the EndXXX call should only be called if the corresponding BeginXXX function
+    //    returned true. `Begin` and `BeginChild` are the only odd ones out. Will be fixed in a future update.]
     // - Note that the bottom of window stack always contains a window called "Debug".
     IMGUI_API bool          Begin(const char* name, bool* p_open = NULL, ImGuiWindowFlags flags = 0);
     IMGUI_API void          End();
 
     // Child Windows
     // - Use child windows to begin into a self-contained independent scrolling/clipping regions within a host window. Child windows can embed their own child.
-    // - For each independent axis of 'size': ==0.0f: use remaining host window size / >0.0f: fixed size / <0.0f: use remaining window size minus abs(size) / Each axis can use a different mode, e.g. ImVec2(0,400).
-    // - BeginChild() returns false to indicate the window is collapsed or fully clipped, so you may early out and omit submitting anything to the window.
-    //   Always call a matching EndChild() for each BeginChild() call, regardless of its return value [as with Begin: this is due to legacy reason and inconsistent with most BeginXXX functions apart from the regular Begin() which behaves like BeginChild().]
+    // - For each independent axis of `size`: 
+    //     - `== 0.0f` -> use remaining host window size 
+    //     - `> 0.0f` -> fixed size
+    //     - `< 0.0f` -> use remaining window size minus abs(size)
+    // - Each axis can use a different mode, e.g. `ImVec2(0,400)`.
+    // - `BeginChild()` returns false to indicate the window is collapsed or fully clipped, so you may early out and omit submitting anything to the window.
+    // Always call a matching `EndChild()` for each `BeginChild()` call, regardless of its return value [as with `Begin`: this is due to legacy reason and inconsistent with most BeginXXX functions apart from the regular `Begin()` which behaves like `BeginChild()`.]
     IMGUI_API bool          BeginChild(const char* str_id, const ImVec2& size = ImVec2(0,0), bool border = false, ImGuiWindowFlags flags = 0);
     IMGUI_API bool          BeginChild(ImGuiID id, const ImVec2& size = ImVec2(0,0), bool border = false, ImGuiWindowFlags flags = 0);
     IMGUI_API void          EndChild();
 
     // Windows Utilities
-    // - 'current window' = the window we are appending into while inside a Begin()/End() block. 'next window' = next window we will Begin() into.
+    // - _Current window_ = the window we are appending into while inside a `Begin()` / `End()` block. 
+    // - _Next window_ = next window we will `Begin()` into.
     IMGUI_API bool          IsWindowAppearing();
     IMGUI_API bool          IsWindowCollapsed();
-    IMGUI_API bool          IsWindowFocused(ImGuiFocusedFlags flags=0); // is current window focused? or its root/child, depending on flags. see flags for options.
-    IMGUI_API bool          IsWindowHovered(ImGuiHoveredFlags flags=0); // is current window hovered (and typically: not blocked by a popup/modal)? see flags for options. NB: If you are trying to check whether your mouse should be dispatched to imgui or to your app, you should use the 'io.WantCaptureMouse' boolean for that! Please read the FAQ!
-    IMGUI_API ImDrawList*   GetWindowDrawList();                        // get draw list associated to the current window, to append your own drawing primitives
-    IMGUI_API ImVec2        GetWindowPos();                             // get current window position in screen space (useful if you want to do your own drawing via the DrawList API)
-    IMGUI_API ImVec2        GetWindowSize();                            // get current window size
-    IMGUI_API float         GetWindowWidth();                           // get current window width (shortcut for GetWindowSize().x)
-    IMGUI_API float         GetWindowHeight();                          // get current window height (shortcut for GetWindowSize().y)
+    IMGUI_API bool          IsWindowFocused(ImGuiFocusedFlags flags=0); // is _current window_ focused? Or its root/child, depending on flags. See flags for options.
+    IMGUI_API bool          IsWindowHovered(ImGuiHoveredFlags flags=0); // is _current window_ hovered (and typically: not blocked by a popup/modal)? See flags for options. NB: If you are trying to check whether your mouse should be dispatched to imgui or to your app, you should use the 'io.WantCaptureMouse' boolean for that! Please read the FAQ!
+    IMGUI_API ImDrawList*   GetWindowDrawList();                        // get draw list associated to the _current window_, to append your own drawing primitives
+    IMGUI_API ImVec2        GetWindowPos();                             // get _current window_ position in screen space (useful if you want to do your own drawing via the DrawList API)
+    IMGUI_API ImVec2        GetWindowSize();                            // get _current window_ size
+    IMGUI_API float         GetWindowWidth();                           // get _current window_ width (shortcut for `GetWindowSize().x`)
+    IMGUI_API float         GetWindowHeight();                          // get _current window_ height (shortcut for `GetWindowSize().y`)
 
-    // Prefer using SetNextXXX functions (before Begin) rather that SetXXX functions (after Begin).
+    // Next Window Utilities
+    // - Prefer using `SetNextXXX` functions (before `Begin`) rather than `SetXXX` functions (after `Begin()`).
     IMGUI_API void          SetNextWindowPos(const ImVec2& pos, ImGuiCond cond = 0, const ImVec2& pivot = ImVec2(0,0)); // set next window position. call before Begin(). use pivot=(0.5f,0.5f) to center on given point, etc.
     IMGUI_API void          SetNextWindowSize(const ImVec2& size, ImGuiCond cond = 0);                  // set next window size. set axis to 0.0f to force an auto-fit on this axis. call before Begin()
     IMGUI_API void          SetNextWindowSizeConstraints(const ImVec2& size_min, const ImVec2& size_max, ImGuiSizeCallback custom_callback = NULL, void* custom_callback_data = NULL); // set next window size limits. use -1,-1 on either X/Y axis to preserve the current size. Sizes will be rounded down. Use callback to apply non-trivial programmatic constraints.
