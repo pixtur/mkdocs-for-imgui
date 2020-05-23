@@ -9,6 +9,4 @@ With Visual Assist installed: ALT+G ("VAssistX.GoToImplementation") can also fol
 (we generally use UTF-8 encoded string in the API. This is storage specifically for a decoded character used for keyboard input and display)
 ## Basic scalar data types
 ## 2D vector (often used to store positions or sizes)
-## struct  **<struct> ImVec2**
 ## 4D vector (often used to store floating-point colors)
-## struct  **<struct> ImVec4**

@@ -97,6 +97,60 @@ class Token {
     }
 }
 
+class ScopeEnumLine extends Token {
+    
+    value: string = '';
+    comment: string = '';
+
+    constructor(
+        title: string,
+        value: string,        
+        comment: string
+    ) {
+        super();
+        this.title = title;
+        this.value= value;
+        this.comment = comment;
+    }
+
+    static parse(text: string): Token[] {
+        const regex = /(.*?)\s*(\w+)(\s+=\s*(.*?))?,\s*?(\/\/\s*(.*?))?\n(.*)/ms;
+        let tokens: Token[] = [];
+        let remaining: string = '\n' + text + '\n';
+
+        for (
+            let result: RegExpExecArray | null;
+            (result = regex.exec(remaining));
+
+        ) {
+            let [
+                , 
+                previous,
+                title,
+                ,
+                value,
+                ,
+                comment,
+                newRemaining,
+            ] = result;
+
+            tokens.push(
+                new ScopeEnumLine(title, value, comment)
+            );
+
+            remaining = '\n' + newRemaining;
+        }
+        return tokens;
+    }
+
+    writeMarkdown(writer: MarkdownFileWriter) {
+        writer.write(
+            //'- **`' + this.title + '`** (' + this.value + ')   ' + this.comment + '\n'
+            '\n**[' + this.title + '](#' +this.title + ')**  –  ' + this.comment + '\n'
+        );        
+    }
+}
+
 /** Items like methods, enums etc. normally follow by trailing comment */
 class ScopeMethodLine extends Token {
     returnValue: string = '';
@@ -177,13 +231,20 @@ class ScopeMethodLine extends Token {
         //     `\n#### ${this.returnValue} **${this.methodName}**${this.params}\n`
         // );
 
+
+
+        const parameterIndicator = this.params !== '()' ? '...' : '';
+        writer.write(`**[${this.methodName}(${parameterIndicator})](#${this.methodName})**`);
+        if (this.comment) writer.write(' – ' + this.comment + '\n');
+        writer.write('\n');
+
         writer.write(
             '\n``` c\n' +
                 `${this.returnValue} ${this.methodName}${this.params}\n` +
-                '```\n'
+                '```\n\n'
         );
 
-        if (this.comment) writer.write(this.comment + '\n');
+        
     }
 }
 
@@ -241,7 +302,12 @@ class Scope extends Token {
         super();
         this.title = `<${type}> ${title}`;
         this.type = type;
-        this.children.push(...ScopeComment.parse(content));
+        if(type =='namespace') {
+            this.children.push(...ScopeComment.parse(content));
+        }
+        else if(type =='enum') {
+            this.children.push(...ScopeEnumLine.parse(content));
+        }
         // TODO: further parse content
     }
 
@@ -267,7 +333,7 @@ class Scope extends Token {
     }
 
     writeMarkdown(writer: MarkdownFileWriter) {
-        writer.write(`## ${this.type}  **${this.title}**\n`);
+        //writer.write(`## ${this.type}  **${this.title}**\n`);
 
         //writer.write(this.text);
 
