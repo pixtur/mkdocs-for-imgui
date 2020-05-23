@@ -49,6 +49,13 @@ class MarkdownFileWriter extends ConsoleWriter {
     }
 }
 
+/** Minor adjustments to imgui-header to increase compatibility with markdown */
+function ToMarkDown(input:string):string {
+    // Insert linebreak before lists...
+    const output = input.replace(/(\n[^-][^\n]*?)(\n)((-\s+.+?\n)+)/gsm,'$1\n$2$3');
+    return output;
+}
+
 /**
  * Token parsing
  *
@@ -173,7 +180,7 @@ class ScopeMethodLine extends Token {
     }
 
     static parse(text: string): Token[] {
-        const regex = /(.*?)\s+IMGUI_API\s+(\S+?)\s*(\S+?)(\((.*?)\));\s*(\/\/\s(.+?))?\n(.*)/ms;
+        const regex = /(.*?)\s+IMGUI_API\s+(\S+?)\s*(\S+?)(\((.*?)\));\s*(\/\/ ?(.*?))?\n(.*)/ms;
         let tokens: Token[] = [];
         let remaining: string = '\n' + text + '\n';
 
@@ -232,10 +239,9 @@ class ScopeMethodLine extends Token {
         // );
 
 
-
         const parameterIndicator = this.params !== '()' ? '...' : '';
-        writer.write(`**[${this.methodName}(${parameterIndicator})](#${this.methodName})**`);
-        if (this.comment) writer.write(' – ' + this.comment + '\n');
+        writer.write(`\n**[${this.methodName}(${parameterIndicator})](#${this.methodName})**`);
+        if (this.comment) writer.write('  ' + this.comment + '\n');
         writer.write('\n');
 
         writer.write(
@@ -243,8 +249,6 @@ class ScopeMethodLine extends Token {
                 `${this.returnValue} ${this.methodName}${this.params}\n` +
                 '```\n\n'
         );
-
-        
     }
 }
 
@@ -261,12 +265,13 @@ class ScopeContent extends Token {
 class ScopeComment extends Token {
     constructor(text: string) {
         super();
-        this.title = text.replace(/    \/\/\s/g, '');
+        const markdown = text.replace(/    \/\/ ?/g, ''); //careful: \s? would match \n and remove empty lines
+        this.title = markdown;
         // TODO: more parsing here...
     }
 
     static parse(text: string): Token[] {
-        const regex = /(.*?\n)((    \/\/ ([^\n]*\n)){1,})(.*)/ms;
+        const regex = /(.*?\n)((    \/\/ ?([^\n]*\n)){1,})(.*)/ms;
         let blocks: Token[] = [];
         let remaining: string = '\n' + text;
 
@@ -286,7 +291,12 @@ class ScopeComment extends Token {
     }
 
     writeMarkdown(writer: MarkdownFileWriter) {
-        writer.write(`### ${this.title}\n\n`);
+        const lines = this.title.split('\n');
+
+        writer.write(`\n### ${lines[0]}\n`);
+        const content = lines.slice(1).join('\n') + '\n';
+
+        writer.write(ToMarkDown(content));
 
         //writer.write(this.text);
 
@@ -357,7 +367,7 @@ class Comment extends Token {
     constructor(text: string) {
         super();
 
-        const lines = text.replace(/\/\/\s+/g, '').split('\n');
+        const lines = text.replace(/\/\/\s*?/g, '').split('\n');
 
         this.title = lines[0];
         this.text =  lines.length<1 ? '' : lines.slice(1).join('\n'); 
@@ -365,7 +375,7 @@ class Comment extends Token {
     }
 
     static parse(text: string): Token[] {
-        const regex = /(.*?\n)((\/\/ ([^\n]*\n)){1,})(.*)/ms;
+        const regex = /(.*?\n)((\/\/\s?([^\n]*\n)){1,})(.*)/ms;
         let blocks: Token[] = [];
         let remaining: string = text;
 
