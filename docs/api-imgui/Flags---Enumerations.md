@@ -1,5 +1,5 @@
 # Flags & Enumerations
-## Flags for ImGui::Begin()
+##  Flags for ImGui::Begin()
 
 **[ImGuiWindowFlags_None](#ImGuiWindowFlags_None)**  –  undefined
 
@@ -62,7 +62,7 @@
 **[ImGuiWindowFlags_ChildMenu](#ImGuiWindowFlags_ChildMenu)**  –  --> Set style.FrameBorderSize=1.0f or style.WindowBorderSize=1.0f to enable borders around items or windows.
 
 **[ImGuiWindowFlags_ResizeFromAnySide](#ImGuiWindowFlags_ResizeFromAnySide)**  –  --> Set io.ConfigWindowsResizeFromEdges=true and make sure mouse cursors are supported by back-end (io.BackendFlags & ImGuiBackendFlags_HasMouseCursors)
-## Flags for ImGui::InputText()
+##  Flags for ImGui::InputText()
 
 **[ImGuiInputTextFlags_None](#ImGuiInputTextFlags_None)**  –  undefined
 
@@ -105,7 +105,7 @@
 **[ImGuiInputTextFlags_CallbackResize](#ImGuiInputTextFlags_CallbackResize)**  –  Callback on buffer capacity changes request (beyond 'buf_size' parameter value), allowing the string to grow. Notify when the string wants to be resized (for string types which hold a cache of their Size). You will be provided a new BufSize in the callback and NEED to honor it. (see misc/cpp/imgui_stdlib.h for an example of using this)
 
 **[ImGuiInputTextFlags_Multiline](#ImGuiInputTextFlags_Multiline)**  –  For internal use by InputTextMultiline()
-## Flags for ImGui::TreeNodeEx(), ImGui::CollapsingHeader*()
+##  Flags for ImGui::TreeNodeEx(), ImGui::CollapsingHeader*()
 
 **[ImGuiTreeNodeFlags_None](#ImGuiTreeNodeFlags_None)**  –  undefined
 
@@ -138,7 +138,7 @@
 **[ImGuiTreeNodeFlags_NavLeftJumpsBackHere](#ImGuiTreeNodeFlags_NavLeftJumpsBackHere)**  –  (WIP) Nav: left direction may move to this TreeNode() from any of its child (items submitted between TreeNode and TreePop)
 
 **[ImGuiTreeNodeFlags_NoScrollOnOpen](#ImGuiTreeNodeFlags_NoScrollOnOpen)**  –  FIXME: TODO: Disable automatic scroll on TreePop() if node got just open and contents is not visible
-## Flags for ImGui::Selectable()
+##  Flags for ImGui::Selectable()
 
 **[ImGuiSelectableFlags_None](#ImGuiSelectableFlags_None)**  –  undefined
 
@@ -149,7 +149,7 @@
 **[ImGuiSelectableFlags_AllowDoubleClick](#ImGuiSelectableFlags_AllowDoubleClick)**  –  Generate press events on double clicks too
 
 **[ImGuiSelectableFlags_Disabled](#ImGuiSelectableFlags_Disabled)**  –  Cannot be selected, display grayed out text
-## Flags for ImGui::BeginCombo()
+##  Flags for ImGui::BeginCombo()
 
 **[ImGuiComboFlags_None](#ImGuiComboFlags_None)**  –  undefined
 
@@ -166,7 +166,7 @@
 **[ImGuiComboFlags_NoArrowButton](#ImGuiComboFlags_NoArrowButton)**  –  Display on the preview box without the square arrow button
 
 **[ImGuiComboFlags_NoPreview](#ImGuiComboFlags_NoPreview)**  –  Display only a square arrow button
-## Flags for ImGui::BeginTabBar()
+##  Flags for ImGui::BeginTabBar()
 
 **[ImGuiTabBarFlags_None](#ImGuiTabBarFlags_None)**  –  undefined
 
@@ -187,7 +187,7 @@
 **[ImGuiTabBarFlags_FittingPolicyScroll](#ImGuiTabBarFlags_FittingPolicyScroll)**  –  Add scroll buttons when tabs don't fit
 
 **[ImGuiTabBarFlags_FittingPolicyMask_](#ImGuiTabBarFlags_FittingPolicyMask_)**  –  undefined
-## Flags for ImGui::BeginTabItem()
+##  Flags for ImGui::BeginTabItem()
 
 **[ImGuiTabItemFlags_None](#ImGuiTabItemFlags_None)**  –  undefined
 
@@ -196,7 +196,7 @@
 **[ImGuiTabItemFlags_SetSelected](#ImGuiTabItemFlags_SetSelected)**  –  Trigger flag to programmatically make the tab selected when calling BeginTabItem()
 
 **[ImGuiTabItemFlags_NoCloseWithMiddleMouseButton](#ImGuiTabItemFlags_NoCloseWithMiddleMouseButton)**  –  Disable behavior of closing tabs (that are submitted with p_open != NULL) with middle mouse button. You can still repro this behavior on user's side with if (IsItemHovered() && IsMouseClicked(2)) *p_open = false.
-## Flags for ImGui::IsWindowFocused()
+##  Flags for ImGui::IsWindowFocused()
 
 **[ImGuiFocusedFlags_None](#ImGuiFocusedFlags_None)**  –  undefined
 
@@ -205,9 +205,9 @@
 **[ImGuiFocusedFlags_RootWindow](#ImGuiFocusedFlags_RootWindow)**  –  IsWindowFocused(): Test from root window (top most parent of the current hierarchy)
 
 **[ImGuiFocusedFlags_AnyWindow](#ImGuiFocusedFlags_AnyWindow)**  –  IsWindowFocused(): Return true if any window is focused. Important: If you are trying to tell how to dispatch your low-level inputs, do NOT use this. Use 'io.WantCaptureMouse' instead! Please read the FAQ!
-## Flags for ImGui::IsItemHovered(), ImGui::IsWindowHovered()
-Note: if you are trying to check whether your mouse should be dispatched to Dear ImGui or to your app, you should use 'io.WantCaptureMouse' instead! Please read the FAQ!
-Note: windows with the ImGuiWindowFlags_NoInputs flag are ignored by IsWindowHovered() calls.
+##  Flags for ImGui::IsItemHovered(), ImGui::IsWindowHovered()
+ Note: if you are trying to check whether your mouse should be dispatched to Dear ImGui or to your app, you should use 'io.WantCaptureMouse' instead! Please read the FAQ!
+ Note: windows with the ImGuiWindowFlags_NoInputs flag are ignored by IsWindowHovered() calls.
 
 **[ImGuiHoveredFlags_None](#ImGuiHoveredFlags_None)**  –  Return true if directly over the item/window, not obstructed by another window, not obstructed by an active popup or modal blocking inputs under them.
 
@@ -228,7 +228,7 @@ Note: windows with the ImGuiWindowFlags_NoInputs flag are ignored by IsWindowHov
 **[ImGuiHoveredFlags_AllowWhenDisabled](#ImGuiHoveredFlags_AllowWhenDisabled)**  –  Return true even if the item is disabled
 
 **[ImGuiHoveredFlags_RectOnly](#ImGuiHoveredFlags_RectOnly)**  –  undefined
-## Flags for ImGui::BeginDragDropSource(), ImGui::AcceptDragDropPayload()
+##  Flags for ImGui::BeginDragDropSource(), ImGui::AcceptDragDropPayload()
 
 **[ImGuiDragDropFlags_None](#ImGuiDragDropFlags_None)**  –  undefined
 
@@ -249,8 +249,8 @@ Note: windows with the ImGuiWindowFlags_NoInputs flag are ignored by IsWindowHov
 **[ImGuiDragDropFlags_AcceptNoDrawDefaultRect](#ImGuiDragDropFlags_AcceptNoDrawDefaultRect)**  –  Do not draw the default highlight rectangle when hovering over target.
 
 **[ImGuiDragDropFlags_AcceptNoPreviewTooltip](#ImGuiDragDropFlags_AcceptNoPreviewTooltip)**  –  Request hiding the BeginDragDropSource tooltip from the BeginDragDropTarget site.
-## Standard Drag and Drop payload types. You can define you own payload types using short strings. Types starting with '_' are defined by Dear ImGui.
-## A primary data type
+##  Standard Drag and Drop payload types. You can define you own payload types using short strings. Types starting with '_' are defined by Dear ImGui.
+##  A primary data type
 
 **[ImGuiDataType_S8](#ImGuiDataType_S8)**  –  signed char / char (with sensible compilers)
 
@@ -271,7 +271,7 @@ Note: windows with the ImGuiWindowFlags_NoInputs flag are ignored by IsWindowHov
 **[ImGuiDataType_Float](#ImGuiDataType_Float)**  –  float
 
 **[ImGuiDataType_Double](#ImGuiDataType_Double)**  –  double
-## A cardinal direction
+##  A cardinal direction
 
 **[ImGuiDir_None](#ImGuiDir_None)**  –  undefined
 
@@ -282,7 +282,7 @@ Note: windows with the ImGuiWindowFlags_NoInputs flag are ignored by IsWindowHov
 **[ImGuiDir_Up](#ImGuiDir_Up)**  –  undefined
 
 **[ImGuiDir_Down](#ImGuiDir_Down)**  –  undefined
-## User fill ImGuiIO.KeyMap[] array with indices into the ImGuiIO.KeysDown[512] array
+##  User fill ImGuiIO.KeyMap[] array with indices into the ImGuiIO.KeysDown[512] array
 
 **[ImGuiKey_Tab](#ImGuiKey_Tab)**  –  undefined
 
@@ -327,7 +327,7 @@ Note: windows with the ImGuiWindowFlags_NoInputs flag are ignored by IsWindowHov
 **[ImGuiKey_Y](#ImGuiKey_Y)**  –  for text edit CTRL+Y: redo
 
 **[ImGuiKey_Z](#ImGuiKey_Z)**  –  for text edit CTRL+Z: undo
-## To test io.KeyMods (which is a combination of individual fields io.KeyCtrl, io.KeyShift, io.KeyAlt set by user/back-end)
+##  To test io.KeyMods (which is a combination of individual fields io.KeyCtrl, io.KeyShift, io.KeyAlt set by user/back-end)
 
 **[ImGuiKeyModFlags_None](#ImGuiKeyModFlags_None)**  –  undefined
 
@@ -336,10 +336,10 @@ Note: windows with the ImGuiWindowFlags_NoInputs flag are ignored by IsWindowHov
 **[ImGuiKeyModFlags_Shift](#ImGuiKeyModFlags_Shift)**  –  undefined
 
 **[ImGuiKeyModFlags_Alt](#ImGuiKeyModFlags_Alt)**  –  undefined
-## Gamepad/Keyboard navigation
-- XXXKeyboard: Set io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard to enable. NewFrame() will automatically fill io.NavInputs[] based on your io.KeysDown[] + io.KeyMap[] arrays.
-- Gamepad:  Set io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad to enable. Back-end: set ImGuiBackendFlags_HasGamepad and fill the io.NavInputs[] fields before calling NewFrame(). Note that io.NavInputs[] is cleared by EndFrame().
-- Read instructions in imgui.cpp for more details. Download PNG/PSD at http://goo.gl/9LgVZW.
+##  Gamepad/Keyboard navigation
+ - XXXKeyboard: Set `io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard` to enable. `NewFrame()` will automatically fill `io.NavInputs[]` based on your `io.KeysDown[]` and `io.KeyMap[]` arrays.
+ - Gamepad:  Set io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad to enable. Back-end: set ImGuiBackendFlags_HasGamepad and fill the `io.NavInputs[]` fields before calling `NewFrame()`. Note that `io.NavInputs[]` is cleared by `EndFrame()`.
+ - Read instructions in imgui.cpp for more details. Download PNG/PSD at http:goo.gl/9LgVZW.
 
 **[ImGuiNavInput_Activate](#ImGuiNavInput_Activate)**  –  activate / open / toggle / tweak value       // e.g. Cross  (PS4), A (Xbox), A (Switch), Space (Keyboard)
 
@@ -376,7 +376,7 @@ Note: windows with the ImGuiWindowFlags_NoInputs flag are ignored by IsWindowHov
 **[ImGuiNavInput_KeyDown_](#ImGuiNavInput_KeyDown_)**  –  move down
 
 **[ImGuiNavInput_COUNT](#ImGuiNavInput_COUNT)**  –  undefined
-## Configuration flags stored in io.ConfigFlags. Set by user/application.
+##  Configuration flags stored in io.ConfigFlags. Set by user/application.
 
 **[ImGuiConfigFlags_None](#ImGuiConfigFlags_None)**  –  undefined
 
@@ -393,7 +393,7 @@ Note: windows with the ImGuiWindowFlags_NoInputs flag are ignored by IsWindowHov
 **[ImGuiConfigFlags_NoMouseCursorChange](#ImGuiConfigFlags_NoMouseCursorChange)**  –  Instruct back-end to not alter mouse cursor shape and visibility. Use if the back-end cursor changes are interfering with yours and you don't want to use SetMouseCursor() to change mouse cursor. You may want to honor requests from imgui by reading GetMouseCursor() yourself instead.
 
 **[ImGuiConfigFlags_IsSRGB](#ImGuiConfigFlags_IsSRGB)**  –  Application is SRGB-aware.
-## Back-end capabilities flags stored in io.BackendFlags. Set by imgui_impl_xxx or custom back-end.
+##  Back-end capabilities flags stored in io.BackendFlags. Set by imgui_impl_xxx or custom back-end.
 
 **[ImGuiBackendFlags_None](#ImGuiBackendFlags_None)**  –  undefined
 
@@ -402,7 +402,7 @@ Note: windows with the ImGuiWindowFlags_NoInputs flag are ignored by IsWindowHov
 **[ImGuiBackendFlags_HasMouseCursors](#ImGuiBackendFlags_HasMouseCursors)**  –  Back-end Platform supports honoring GetMouseCursor() value to change the OS cursor shape.
 
 **[ImGuiBackendFlags_HasSetMousePos](#ImGuiBackendFlags_HasSetMousePos)**  –  Back-end Platform supports io.WantSetMousePos requests to reposition the OS mouse position (only used if ImGuiConfigFlags_NavEnableSetMousePos is set).
-## Enumeration for PushStyleColor() / PopStyleColor()
+##  Enumeration for PushStyleColor() / PopStyleColor()
 
 **[ImGuiCol_Text](#ImGuiCol_Text)**  –  undefined
 
@@ -499,13 +499,13 @@ Note: windows with the ImGuiWindowFlags_NoInputs flag are ignored by IsWindowHov
 **[ImGuiCol_NavWindowingDimBg](#ImGuiCol_NavWindowingDimBg)**  –  Darken/colorize entire screen behind the CTRL+TAB window list, when active
 
 **[ImGuiCol_ModalWindowDimBg](#ImGuiCol_ModalWindowDimBg)**  –  Darken/colorize entire screen behind a modal window, when one is active
-## Enumeration for PushStyleVar() / PopStyleVar() to temporarily modify the ImGuiStyle structure.
-- The enum only refers to fields of ImGuiStyle which makes sense to be pushed/popped inside UI code.
-During initialization or between frames, feel free to just poke into ImGuiStyle directly.
-- Tip: Use your programming IDE navigation facilities on the names in the _second column_ below to find the actual members and their description.
-In Visual Studio IDE: CTRL+comma ("Edit.NavigateTo") can follow symbols in comments, whereas CTRL+F12 ("Edit.GoToImplementation") cannot.
-With Visual Assist installed: ALT+G ("VAssistX.GoToImplementation") can also follow symbols in comments.
-- When changing this enum, you need to update the associated internal table GStyleVarInfo[] accordingly. This is where we link enum values to members offset/type.
+##  Enumeration for PushStyleVar() / PopStyleVar() to temporarily modify the ImGuiStyle structure.
+ - The enum only refers to fields of ImGuiStyle which makes sense to be pushed/popped inside UI code.
+   During initialization or between frames, feel free to just poke into ImGuiStyle directly.
+ - Tip: Use your programming IDE navigation facilities on the names in the _second column_ below to find the actual members and their description.
+   In Visual Studio IDE: CTRL+comma ("Edit.NavigateTo") can follow symbols in comments, whereas CTRL+F12 ("Edit.GoToImplementation") cannot.
+   With Visual Assist installed: ALT+G ("VAssistX.GoToImplementation") can also follow symbols in comments.
+ - When changing this enum, you need to update the associated internal table GStyleVarInfo[] accordingly. This is where we link enum values to members offset/type.
 
 **[ImGuiStyleVar_Alpha](#ImGuiStyleVar_Alpha)**  –  float     Alpha
 
@@ -552,7 +552,7 @@ With Visual Assist installed: ALT+G ("VAssistX.GoToImplementation") can also fol
 **[ImGuiStyleVar_ButtonTextAlign](#ImGuiStyleVar_ButtonTextAlign)**  –  ImVec2    ButtonTextAlign
 
 **[ImGuiStyleVar_SelectableTextAlign](#ImGuiStyleVar_SelectableTextAlign)**  –  ImVec2    SelectableTextAlign
-## Flags for ColorEdit3() / ColorEdit4() / ColorPicker3() / ColorPicker4() / ColorButton()
+##  Flags for ColorEdit3() / ColorEdit4() / ColorPicker3() / ColorPicker4() / ColorButton()
 
 **[ImGuiColorEditFlags_None](#ImGuiColorEditFlags_None)**  –  undefined
 
@@ -609,16 +609,16 @@ With Visual Assist installed: ALT+G ("VAssistX.GoToImplementation") can also fol
 **[ImGuiColorEditFlags__DataTypeMask](#ImGuiColorEditFlags__DataTypeMask)**  –  undefined
 
 **[ImGuiColorEditFlags__PickerMask](#ImGuiColorEditFlags__PickerMask)**  –  undefined
-## Identify a mouse button.
-Those values are guaranteed to be stable and we frequently use 0/1 directly. Named enums provided for convenience.
+##  Identify a mouse button.
+ Those values are guaranteed to be stable and we frequently use 0/1 directly. Named enums provided for convenience.
 
 **[ImGuiMouseButton_Left](#ImGuiMouseButton_Left)**  –  undefined
 
 **[ImGuiMouseButton_Right](#ImGuiMouseButton_Right)**  –  undefined
 
 **[ImGuiMouseButton_Middle](#ImGuiMouseButton_Middle)**  –  undefined
-## Enumeration for GetMouseCursor()
-User code may request binding to display given cursor by calling SetMouseCursor(), which is why we have some cursors that are marked unused here
+##  Enumeration for GetMouseCursor()
+ User code may request binding to display given cursor by calling SetMouseCursor(), which is why we have some cursors that are marked unused here
 
 **[ImGuiMouseCursor_None](#ImGuiMouseCursor_None)**  –  undefined
 
@@ -639,9 +639,9 @@ User code may request binding to display given cursor by calling SetMouseCursor(
 **[ImGuiMouseCursor_Hand](#ImGuiMouseCursor_Hand)**  –  (Unused by Dear ImGui functions. Use for e.g. hyperlinks)
 
 **[ImGuiMouseCursor_NotAllowed](#ImGuiMouseCursor_NotAllowed)**  –  When hovering something with disallowed interaction. Usually a crossed circle.
-## Enumeration for ImGui::SetWindow***(), SetNextWindow***(), SetNextItem***() functions
-Represent a condition.
-Important: Treat as a regular enum! Do NOT combine multiple values using binary operators! All the functions above treat 0 as a shortcut to ImGuiCond_Always.
+##  Enumeration for ImGui::SetWindow***(), SetNextWindow***(), SetNextItem***() functions
+ Represent a condition.
+ Important: Treat as a regular enum! Do NOT combine multiple values using binary operators! All the functions above treat 0 as a shortcut to ImGuiCond_Always.
 
 **[ImGuiCond_Always](#ImGuiCond_Always)**  –  Set the variable
 
