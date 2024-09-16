@@ -9,7 +9,7 @@
         "@types/node": "12.12.8",
         "@types/uuid": "^3.4.6",
         "eslint": "^6.6.0",
-        "express": "^4.20.0",
+        "express": "^4.21.0",
         "husky": "^3.1.0",
         "lint-staged": "^9.4.3",
         "lodash": "^4.17.21",
